@@ -1,11 +1,7 @@
 package a3rt
 
 import (
-	"net/http"
 	"fmt"
-	"encoding/json"
-	"io/ioutil"
-	"strings"
 	"net/url"
 )
 
@@ -24,23 +20,14 @@ type SmalltalkResult struct{
 
 func (cli Client) SmallTalk(query string) ([]SmalltalkResult, error) {
 	if len([]byte(query)) > maxBodySize {
-		return nil, fmt.Errorf("request entity too long: query must not be more than 2048 bytes.")
+		return nil, fmt.Errorf("request entity too long: query must not be more than %d bytes.", maxBodySize)
 	}
+
 	values := url.Values{}
 	values.Set("apikey", cli.key)
 	values.Add("query", query)
-	resp, err := http.Post(apiBase + "talk/v1/smalltalk", "application/x-www-form-urlencoded", strings.NewReader(values.Encode()))
-	if err != nil {
-		return nil, err
-	}
-	defer resp.Body.Close()
-
-	bytes, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
 	var smalltalk SmalltalkResponse
-	err = json.Unmarshal(bytes, &smalltalk)
+	err := cli.post("https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk", values, &smalltalk)
 	if err != nil {
 		return nil, err
 	}
