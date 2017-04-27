@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"strings"
+	"net/url"
 )
 
 const maxBodySize = 2048
@@ -25,7 +26,10 @@ func (cli Client) SmallTalk(query string) ([]SmalltalkResult, error) {
 	if len([]byte(query)) > maxBodySize {
 		return nil, fmt.Errorf("request entity too long: query must not be more than 2048 bytes.")
 	}
-	resp, err := http.Post(apiBase + "talk/v1/smalltalk", "application/x-www-form-urlencoded", strings.NewReader(query))
+	values := url.Values{}
+	values.Set("apikey", cli.key)
+	values.Add("query", query)
+	resp, err := http.Post(apiBase + "talk/v1/smalltalk", "application/x-www-form-urlencoded", strings.NewReader(values.Encode()))
 	if err != nil {
 		return nil, err
 	}
