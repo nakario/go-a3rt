@@ -6,6 +6,6 @@ type Client struct{
 	key	string
 }
 
-func NewClient(key sting) Client {
+func NewClient(key string) Client {
 	return Client{key }
 }
