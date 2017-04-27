@@ -41,5 +41,10 @@ func (cli Client) SmallTalk(query string) ([]SmalltalkResult, error) {
 		return nil, err
 	}
 
-	return smalltalk.Results, nil
+	switch smalltalk.Status {
+	case 0:
+		return smalltalk.Results, nil
+	default:
+		return nil, fmt.Errorf(smalltalk.Message)
+	}
 }
