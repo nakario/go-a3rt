@@ -7,6 +7,14 @@ import (
 
 const maxPreviousDescriptionSize = 500
 
+type TextSuggestClient struct{
+	client
+}
+
+func NewTextSuggestClient(key string) TextSuggestClient {
+	return TextSuggestClient{newClient(key)}
+}
+
 type Style int
 const (
 	Gendaibun Style = iota
@@ -27,7 +35,7 @@ type PredictResponse struct{
 	Suggestion	[]string	`json:"suggestion"`
 }
 
-func (cli Client) Predict(previousDescription string, style Style, separation Separation) ([]string, error) {
+func (cli TextSuggestClient) Predict(previousDescription string, style Style, separation Separation) ([]string, error) {
 	if len(previousDescription) > maxPreviousDescriptionSize {
 		return nil, fmt.Errorf("request entity too long: previous description must not be more than %d characters.", maxPreviousDescriptionSize)
 	}

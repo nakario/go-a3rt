@@ -7,6 +7,14 @@ import (
 
 const maxBodySize = 2048
 
+type TalkClient struct{
+	client
+}
+
+func NewTalkClient(key string) TalkClient {
+	return TalkClient{newClient(key)}
+}
+
 type SmalltalkResponse struct{
 	Status	int			`json:"status"`
 	Message	string			`json:"message"`
@@ -18,7 +26,7 @@ type SmalltalkResult struct{
 	Reply		string	`json:"reply"`
 }
 
-func (cli Client) SmallTalk(query string) ([]SmalltalkResult, error) {
+func (cli TalkClient) SmallTalk(query string) ([]SmalltalkResult, error) {
 	if len([]byte(query)) > maxBodySize {
 		return nil, fmt.Errorf("request entity too long: query must not be more than %d bytes.", maxBodySize)
 	}

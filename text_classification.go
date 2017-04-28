@@ -7,6 +7,14 @@ import (
 
 const maxTextSize = 1000
 
+type TextClassificationClient struct{
+	client
+}
+
+func NewTextClassificationClient(key string) TextClassificationClient {
+	return TextClassificationClient{newClient(key)}
+}
+
 type ClassifyResponse struct{
 	Status	int	`json:"status"`
 	Message	string	`json:"message"`
@@ -18,7 +26,7 @@ type Class struct{
 	Probability	float64	`json:"probability"`
 }
 
-func (cli Client) Classify(text string, modelID string) ([]Class, error) {
+func (cli TextClassificationClient) Classify(text string, modelID string) ([]Class, error) {
 	if len(text) > maxTextSize {
 		return nil, fmt.Errorf("request entity too long: text must not be more than %d characters.", maxTextSize)
 	}

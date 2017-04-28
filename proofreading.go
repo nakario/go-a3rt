@@ -7,6 +7,14 @@ import (
 
 const maxSentenceSize = 500
 
+type ProofreadingClient struct{
+	client
+}
+
+func NewProofreadingClient(key string) ProofreadingClient {
+	return ProofreadingClient{newClient(key)}
+}
+
 type Sensitivity string
 const (
 	Low	Sensitivity	= "low"
@@ -28,7 +36,7 @@ type Alert struct{
 	RankingScore	int	`json:"RankingScore"`
 }
 
-func (cli Client) Typo(sentence string, sensitivity Sensitivity) ([]Alert, error) {
+func (cli ProofreadingClient) Typo(sentence string, sensitivity Sensitivity) ([]Alert, error) {
 	if len(sentence) > maxSentenceSize {
 		return nil, fmt.Errorf("request entity too long: sentence must not be more than %d characters.", maxSentenceSize)
 	}

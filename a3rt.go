@@ -9,15 +9,15 @@ import (
 
 const apiBase string = "https://api.a3rt.recruit-tech.co.jp/"
 
-type Client struct{
+type client struct{
 	key	string
 }
 
-func NewClient(key string) Client {
-	return Client{key }
+func newClient(key string) client {
+	return client{key }
 }
 
-func (cli Client) get(endpoint string, values url.Values, resp interface{}) error {
+func (cli client) get(endpoint string, values url.Values, resp interface{}) error {
 	getResp, err := http.Get(endpoint + "?" + values.Encode())
 	if err != nil {
 		return err
@@ -37,7 +37,7 @@ func (cli Client) get(endpoint string, values url.Values, resp interface{}) erro
 	return nil
 }
 
-func (cli Client) post(endpoint string, values url.Values, resp interface{}) error {
+func (cli client) post(endpoint string, values url.Values, resp interface{}) error {
 	postResp, err := http.PostForm(endpoint, values)
 	if err != nil {
 		return err
