@@ -44,7 +44,7 @@ func (cli ProofreadingClient) Typo(sentence string, sensitivity Sensitivity) ([]
 	values := url.Values{}
 	values.Set("apikey", cli.key)
 	values.Add("sentence", sentence)
-	values.Set("sensitivity", string(sensitivity))
+	values.Set("sensitivity", fmt.Sprintf("%d", sensitivity))
 	var typo TypoResponse
 	err := cli.get("https://api.a3rt.recruit-tech.co.jp/proofreading/v1/typo", values, &typo)
 	if err != nil {

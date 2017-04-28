@@ -43,8 +43,9 @@ func (cli TextSuggestClient) Predict(previousDescription string, style Style, se
 	values := url.Values{}
 	values.Set("apikey", cli.key)
 	values.Add("previous_description", previousDescription)
-	values.Set("style", string(style))
-	values.Set("separation", string(separation))
+	values.Set("style", fmt.Sprintf("%d", style))
+	values.Set("separation", fmt.Sprintf("%d", separation))
+	fmt.Println(values)
 	var predict PredictResponse
 	err := cli.get("https://api.a3rt.recruit-tech.co.jp/text_suggest/v1/predict", values, &predict)
 	if err != nil {
