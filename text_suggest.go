@@ -45,7 +45,6 @@ func (cli TextSuggestClient) Predict(previousDescription string, style Style, se
 	values.Add("previous_description", previousDescription)
 	values.Set("style", fmt.Sprintf("%d", style))
 	values.Set("separation", fmt.Sprintf("%d", separation))
-	fmt.Println(values)
 	var predict PredictResponse
 	err := cli.get("https://api.a3rt.recruit-tech.co.jp/text_suggest/v1/predict", values, &predict)
 	if err != nil {
